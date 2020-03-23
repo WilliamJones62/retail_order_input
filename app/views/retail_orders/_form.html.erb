@@ -1,0 +1,81 @@
+<%= form_with(model: retail_order, local: true) do |form| %>
+  <% if retail_order.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(retail_order.errors.count, "error") %> prohibited this retail_order from being saved:</h2>
+
+      <ul>
+      <% retail_order.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <table>
+    <thead>
+      <tr>
+        <th><%= form.label :customer %></th>
+        <th><%= form.label :shipto %></th>
+        <th><%= form.label :date_required %></th>
+        <th><%= form.label :po_number %></th>
+        <th><%= form.label :second_run %></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><%= form.text_field :customer, size: 10, readonly: true, id: :retail_order_customer %></td>
+        <td><%= form.text_field :shipto, size: 10, readonly: true, id: :retail_order_shipto %></td>
+        <td><%= form.date_field :date_required, id: :retail_order_date_required, :value => @required_date %></td>
+        <td><%= form.text_field :po_number, size: 10, id: :retail_order_po_number %></td>
+        <td><%= form.check_box :second_run, id: :retail_order_second_run, :onchange=> ("dateRequired()") %></td>
+      </tr>
+    </tbody>
+  </table>
+  <table>
+    <thead>
+      <tr>
+        <th><%= form.label :notes %></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><%= form.text_area :notes, size: "76x4", id: :retail_order_customer %></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p><strong>Parts</strong></p>
+  <% i = 1 %>
+  <table>
+    <thead>
+      <tr>
+        <th>No:</th>
+        <th>UOM</th>
+        <th>Description</th>
+        <th>Qty</th>
+        <th>New part</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= form.fields_for :retail_order_parts do |p| %>
+        <tr>
+          <td><%= i %></td>
+          <% i += 1 %>
+          <td><%= p.text_field :uom, readonly: true, :style => "width:2.5em" %></td>
+          <td><%= p.select :partdesc, $descs, {:style => "width:20em"}, {:onchange=> ("partUoms(id)")} %></td>
+          <td><%= p.number_field :qty, min: 0, :style => "width:2.5em" %></td>
+          <td><%= p.text_field :partcode, {:oninput=> ("partDescriptions(id)")} %></td>
+        </tr>
+        <% end %>
+    </tbody>
+  </table>
+
+  <div class="actions">
+    <%= form.submit "Input order" %>
+  </div>
+<% end %>
+<p id= "uoms" hidden> <%= $jsuoms %> </p>
+<p id= "descs" hidden> <%= $jsdescs %> </p>
+<p id= "alldescs" hidden> <%= $alldescs %> </p>
+<p id= "allcodes" hidden> <%= $allcodes %> </p>
+<p id= "alluoms" hidden> <%= $alluoms %> </p>

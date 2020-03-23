@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<table id="listtab"  class="stripe" class="mytable" class="display" cellspacing="0" >
+  <thead>
+    <tr>
+      <% if @user == 'ADMIN' || @user == "ISR" %>
+        <th>Rep</th>
+      <% end %>
+      <th>Cust</th>
+      <th>Date</th>
+      <% if @user == 'ADMIN' %>
+        <th>Status</th>
+      <% end %>
+      <th>Edit</th>
+      <th>Delete</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @retail_orders.each do |retail_order| %>
+      <tr>
+        <% if @user == 'ADMIN' || @user == "ISR" %>
+          <td><%= retail_order.rep %></td>
+        <% end %>
+        <td><%= retail_order.customer %></td>
+        <td><%= display_date(retail_order.date_required) %></td>
+        <% if @user == 'ADMIN' %>
+          <td><%= retail_order.status %></td>
+        <% end %>
+        <td><%= link_to 'Edit', edit_retail_order_path(retail_order) %></td>
+        <td><%= link_to 'Cancel', retail_order, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

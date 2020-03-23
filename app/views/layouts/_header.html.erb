@@ -1,0 +1,13 @@
+<h1 class="title">Retail</h1>
+
+<% if current_user %>
+  <div id="navbar">
+    <span><%= link_to 'List', retail_orders_path %></span>
+    <span><%= link_to 'New Order', retail_orders_customer_path %></span>
+    <span><%= link_to 'Errors', retail_orders_error_path %></span>
+    <span><%= link_to 'Sign out', destroy_user_session_path, method: :delete %></span>
+    <% if current_user.email == "admin" %>
+      <span><%= link_to 'Sign up', new_user_registration_path %></span>
+    <% end %>
+  </div>
+<% end %>
